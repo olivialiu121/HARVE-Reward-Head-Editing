@@ -1,0 +1,22 @@
+# Core deep-learning stack
+torch>=2.1
+transformers>=4.51,<6.0
+peft>=0.11
+accelerate>=0.30
+datasets>=2.18
+sentencepiece
+protobuf
+einops
+hf_transfer
+
+# Fine-tuning baselines
+trl==0.13.0
+
+# Analysis + plots
+numpy>=1.24
+pyyaml>=6.0
+tqdm
+matplotlib>=3.7
+
+# Optional: faster HF downloads
+# Set HF_HUB_ENABLE_HF_TRANSFER=1 to activate

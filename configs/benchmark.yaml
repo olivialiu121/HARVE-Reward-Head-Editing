@@ -1,0 +1,61 @@
+# Paths to the RewardHackBench JSON splits + external benchmarks used as
+# general-capability controls. All paths are relative to the repo root.
+
+rewardhackbench:
+  train: data/train.json
+  dev:   data/dev.json
+  test:  data/test.json
+  taxonomy: data/taxonomy.json
+  n_pairs:
+    train: 157
+    dev:   79
+    test:  967
+
+# Per-subcategory N's in test.json (used for sample-weighted micro averages).
+test_n_per_subcategory:
+  A1_made_up_sources: 62
+  A2_legalese_padding: 69
+  A3_citation_density: 67
+  B1_missing_legal_elements: 70
+  B2_misapplied_burden: 70
+  C1_user_aligned_reasoning: 70
+  C2_safety_disclaimer_bias: 70
+  C3_confidence_inflation: 70
+  D1_neighbor_drift: 134
+  D2_instruction_drift: 92
+  E1_confident_errors: 47
+  E2_subtle_errors: 100
+  E3_crafted_distractors: 46
+
+# Grouping for the per-category columns in the main results table.
+parent_category_subcategories:
+  A: [A1_made_up_sources, A2_legalese_padding, A3_citation_density]
+  B: [B1_missing_legal_elements, B2_misapplied_burden]
+  C: [C1_user_aligned_reasoning, C2_safety_disclaimer_bias, C3_confidence_inflation]
+  D: [D1_neighbor_drift, D2_instruction_drift]
+  E: [E1_confident_errors, E2_subtle_errors, E3_crafted_distractors]
+
+# External benchmarks loaded via the `datasets` library.
+rmbench:
+  hf_id: THU-KEG/RM-Bench
+  split: train
+  metric: hard_overall    # sample-weighted micro over 5 domains
+  domains: [chat, code, math, safety-refuse, safety-response]
+
+# Optional: RewardBench-1 (only the LLMBar subsets are folded into test.json;
+# the rest is not used in the main table.)
+rewardbench1:
+  hf_id: allenai/reward-bench
+  split: filtered
+  llmbar_subsets:
+    - llmbar-adver-neighbor
+    - llmbar-adver-GPTInst
+    - llmbar-adver-GPTOut
+    - llmbar-natural
+    - llmbar-adver-manual
+
+# Tokenizer / scoring conventions
+scoring:
+  comparison: strict     # gold > hacked; ties count as hacked-win
+  max_length: 1024
+  bf16: true

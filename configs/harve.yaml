@@ -1,0 +1,62 @@
+# HARVE extraction + editing settings.
+#
+# Extraction:
+#   - Restrict to "fooled" pairs (the base RM scored hacked > gold) per
+#     target subcategory. Direction v_k = E[h_hacked - h_gold] over fooled pairs.
+#   - Normalize each v_k to unit norm.
+#   - Pool the v_k vectors for an RM into V ∈ R^{k×d} and use V as the
+#     ablation basis (with SVD orthonormalization).
+#
+# Editing (per RM, parametrized by alpha):
+#   w_r_α = w_r - α · U_k U_k^T w_r
+#   where U_k is the orthonormal basis of span(V), kept up to a singular
+#   value > svd_threshold.
+#
+# Alpha sweep:
+#   - 20 grid points from 0.0 to 3.0 (dense below 1, sparse above 1.5).
+#   - Per-RM "sweet spot" α* is the largest grid point that maximises
+#     Δ(RewardHackBench Overall) subject to ΔRM-Bench Hard ≥ −2pp.
+
+extraction:
+  source_split: train               # where to extract from
+  pooled_axis_norm: "unit"          # "unit" | "raw"
+  restrict_to_fooled: true          # restrict to base-RM-fooled pairs only
+  min_fooled_per_subcat: 3          # if fewer than this, skip the subcat
+
+ablation:
+  svd_threshold: 1.0e-6
+  alphas:
+    - 0.0
+    - 0.1
+    - 0.2
+    - 0.3
+    - 0.4
+    - 0.5
+    - 0.6
+    - 0.7
+    - 0.8
+    - 0.9
+    - 1.0
+    - 1.1
+    - 1.25
+    - 1.5
+    - 1.6
+    - 1.75
+    - 2.0
+    - 2.25
+    - 2.5
+    - 3.0
+
+alpha_star_selection:
+  primary_metric: rewardhackbench_overall   # micro across 13 subcategories
+  constraint_metric: rmbench_hard
+  constraint_delta: -2.0                    # pp; constraint metric must drop by no more than this
+
+# Hidden-state caching
+caching:
+  layer: "final"                # use the last transformer layer's last-token hidden state
+  pooler: "last_token"          # behavior of standard SequenceClassification reward heads
+  dtype_cache: "float32"        # cache hidden states in fp32 even though forward is bf16
+
+# Reproducibility
+seed: 20260506
