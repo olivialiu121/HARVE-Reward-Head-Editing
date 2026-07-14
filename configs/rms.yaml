@@ -3,9 +3,12 @@
 # InternLM2's custom modeling (works with transformers >=5.x via the
 # rope_scaling shim in src/utils/rm_loaders.py).
 #
-# alpha_star is the per-RM "sweet spot" selected by maximizing
-# RewardHackBench Overall improvement subject to ΔRM-Bench Hard ≥ −2pp,
-# searched over the α grid in configs/harve.yaml::ablation.alphas.
+# alpha_star is the per-RM operating point selected by improving RewardHackBench
+# Overall while keeping general reward-model capability within 4pp of the
+# unedited model on a held-out set of RewardBench subsets that are not otherwise
+# reported (see configs/harve.yaml::alpha_star_selection). RM-Bench and the legal
+# test split are never used for selection and are reported fully held-out.
+# Searched over the α grid in configs/harve.yaml::ablation.alphas.
 
 models:
   Skywork-Reward-V2-Qwen3-0.6B:
@@ -42,7 +45,7 @@ models:
       - A3_citation_density
       - B1_missing_legal_elements
       - C3_confidence_inflation
-    alpha_star: 1.25
+    alpha_star: 1.10
 
   Skywork-Reward-V2-Llama-3.2-3B:
     hf_id: Skywork/Skywork-Reward-V2-Llama-3.2-3B

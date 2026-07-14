@@ -2,6 +2,7 @@ from .seed import set_seed
 from .data_loaders import (
     load_benchmark,
     load_rmbench,
+    load_rewardbench_general,
     load_taxonomy,
     iter_pairs_by_subcategory,
 )

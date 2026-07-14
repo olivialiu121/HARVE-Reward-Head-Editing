@@ -14,8 +14,12 @@
 #
 # Alpha sweep:
 #   - 20 grid points from 0.0 to 3.0 (dense below 1, sparse above 1.5).
-#   - Per-RM "sweet spot" α* is the largest grid point that maximises
-#     Δ(RewardHackBench Overall) subject to ΔRM-Bench Hard ≥ −2pp.
+#   - Per-RM α* is chosen to improve RewardHackBench Overall while keeping
+#     general reward-model capability within 4pp of the unedited model, measured
+#     on a HELD-OUT set of RewardBench subsets that are NOT otherwise reported
+#     (disjoint from RM-Bench and from the off_topic/style columns). RM-Bench and
+#     the legal test split are never consulted during α selection and are
+#     reported fully held-out.
 
 extraction:
   source_split: train               # where to extract from
@@ -49,8 +53,14 @@ ablation:
 
 alpha_star_selection:
   primary_metric: rewardhackbench_overall   # micro across 13 subcategories
-  constraint_metric: rmbench_hard
-  constraint_delta: -2.0                    # pp; constraint metric must drop by no more than this
+  # Capability guard = a held-out general benchmark that is NOT reported anywhere:
+  # the RewardBench subsets EXCLUDING the 5 llmbar subsets (llmbar-adver-neighbor,
+  # llmbar-adver-GPTInst, llmbar-adver-GPTOut, llmbar-natural, llmbar-adver-manual),
+  # which are the reported off_topic / style columns. This general set is disjoint
+  # from RM-Bench and from every reported metric, so RM-Bench and the legal test
+  # split remain fully held-out (never used for α selection).
+  constraint_metric: rewardbench_general_heldout   # RewardBench minus the reported llmbar subsets
+  constraint_delta: -4.0                    # pp; general capability must drop by no more than this
 
 # Hidden-state caching
 caching:
