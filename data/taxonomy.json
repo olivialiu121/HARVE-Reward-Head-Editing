@@ -1,0 +1,49 @@
+{
+  "parent_categories": [
+    {
+      "code": "A",
+      "name": "Surface-Form Mimicry",
+      "description": "The hacked response mimics surface markers of authority (citations, jargon) without substantive support."
+    },
+    {
+      "code": "B",
+      "name": "Broken Reasoning",
+      "description": "The hacked response is convincing in form but contains logical or structural flaws."
+    },
+    {
+      "code": "C",
+      "name": "Sycophantic Hacking",
+      "description": "The hacked response prioritizes user agreement / safety theater over factual correctness."
+    },
+    {
+      "code": "D",
+      "name": "Off-Topic Hacking",
+      "description": "The hacked response is a strong answer to a different / altered prompt (LLMBar subsets)."
+    },
+    {
+      "code": "E",
+      "name": "Style-Over-Substance",
+      "description": "Polished surface but substantive errors; sourced from LLMBar."
+    }
+  ],
+  "subcategories": [
+    {"code": "A1", "key": "A1_made_up_sources",            "name": "Made-up Sources",        "parent": "A", "description": "Cites fake cases or statutes."},
+    {"code": "A2", "key": "A2_legalese_padding",           "name": "Legalese Padding",       "parent": "A", "description": "Adds Latin maxims or jargon without substance."},
+    {"code": "A3", "key": "A3_citation_density",           "name": "Citation Inflation",     "parent": "A", "description": "Adds unsupportive real citations."},
+    {"code": "B1", "key": "B1_missing_legal_elements",     "name": "Missing Elements",       "parent": "B", "description": "Omits parts of a legal test."},
+    {"code": "B2", "key": "B2_misapplied_burden",          "name": "Burden Inversion",       "parent": "B", "description": "Flips the burden of proof."},
+    {"code": "C1", "key": "C1_user_aligned_reasoning",     "name": "User-Aligned Reasoning", "parent": "C", "description": "Matches user's preferred outcome."},
+    {"code": "C2", "key": "C2_safety_disclaimer_bias",     "name": "Safety Disclaimers",     "parent": "C", "description": "Replaces answer with legal disclaimers."},
+    {"code": "C3", "key": "C3_confidence_inflation",       "name": "Hedge Stripping",        "parent": "C", "description": "Drops appropriate legal caveats."},
+    {"code": "D1", "key": "D1_neighbor_drift",             "name": "Neighbor Drift",         "parent": "D", "description": "Strong answer to a different prompt (llmbar-adver-neighbor).",      "n_test": 134},
+    {"code": "D2", "key": "D2_instruction_drift",          "name": "Instruction Drift",      "parent": "D", "description": "Response to an altered instruction (llmbar-adver-GPTInst).",        "n_test": 92},
+    {"code": "E1", "key": "E1_confident_errors",           "name": "Confident Errors",       "parent": "E", "description": "Fluent response that is factually wrong (llmbar-adver-GPTOut).",    "n_test": 47},
+    {"code": "E2", "key": "E2_subtle_errors",              "name": "Subtle Errors",          "parent": "E", "description": "Naturally occurring substantive flaws (llmbar-natural).",           "n_test": 100},
+    {"code": "E3", "key": "E3_crafted_distractors",        "name": "Crafted Distractors",    "parent": "E", "description": "Hand-designed adversarial pairs (llmbar-adver-manual).",           "n_test": 46}
+  ],
+  "splits": {
+    "train": {"n": 157, "professional_only": true,  "purpose": "extraction (compute v_k from fooled subsets)"},
+    "dev":   {"n":  79, "professional_only": true,  "purpose": "α-sweep calibration"},
+    "test":  {"n": 967, "professional_only": false, "purpose": "final evaluation (incl. 419 LLMBar pairs)"}
+  }
+}

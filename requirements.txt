@@ -1,0 +1,28 @@
+# Core deep-learning stack
+torch>=2.1
+# transformers is pinned, not ranged. The 5.x line rewrites rope_scaling on
+# load and breaks InternLM2's custom modeling code; src/utils/rm_loaders.py
+# carries shims for the common failures, but in practice they were not
+# sufficient. For the six non-InternLM2 RMs a newer transformers generally works.
+transformers==4.53.3
+peft>=0.11
+accelerate>=0.30
+datasets>=2.18
+# Newer sentencepiece rejects InternLM2's tokenizer.model with
+# "piece must not include null character".
+sentencepiece==0.2.0
+protobuf
+einops
+hf_transfer
+
+# Fine-tuning baselines
+trl==0.13.0
+
+# Analysis + plots
+numpy>=1.24
+pyyaml>=6.0
+tqdm
+matplotlib>=3.7
+
+# Optional: faster HF downloads
+# Set HF_HUB_ENABLE_HF_TRANSFER=1 to activate

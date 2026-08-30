@@ -1,0 +1,56 @@
+# Settings for the LoRA-based fine-tuning baseline.
+#
+# Two ratios reported in the paper:
+#   3:1  general:legal  →  157 (train) × 3 = 471 general pairs
+#   5:1  general:legal  →  157 (train) × 5 = 785 general pairs
+#
+# The general-data source is Skywork/Skywork-Reward-Preference-80K-v0.2 (the
+# same source for every RM, to keep the FT comparison clean).
+
+general_dataset: "Skywork/Skywork-Reward-Preference-80K-v0.2"
+
+# legal training pairs come from data/train.json (157 pairs).
+ratios:
+  - 3
+  - 5
+
+lora:
+  r: 16
+  lora_alpha: 32
+  lora_dropout: 0.05
+  target_modules: "all-linear"   # q/k/v/o + gate/up/down
+  task_type: "SEQ_CLS"
+  bias: "none"
+  # Score head is intentionally NOT in modules_to_save — preserves
+  # the base RM's pre-trained calibration.
+
+training:
+  per_device_train_batch_size: 4
+  per_device_eval_batch_size: 4
+  gradient_accumulation_steps: 4    # effective batch = 16 pairs
+  num_train_epochs: 3
+  learning_rate: 5.0e-6
+  bf16: true
+  max_length: 1024
+  warmup_ratio: 0.1
+  lr_scheduler_type: "cosine"
+  weight_decay: 0.01
+  gradient_checkpointing: true
+  gradient_checkpointing_kwargs:
+    use_reentrant: false
+  logging_steps: 5
+  eval_steps: 20
+  save_steps: 20
+  save_total_limit: 2
+  metric_for_best_model: "eval_loss"
+  greater_is_better: false
+  load_best_model_at_end: true
+  remove_unused_columns: false
+  report_to: "none"
+
+evaluation:
+  batch_size: 8
+  max_length: 1024
+
+# Reproducibility
+seed: 20260506
