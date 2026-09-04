@@ -4,18 +4,10 @@ This folder contains the benchmark splits and taxonomy used in the paper.
 
 ## Files
 
-Current contents:
-
 ```text
 data/
 ├── README.md       # data documentation
-└── taxonomy.json   # category and subcategory metadata
-```
-
-The benchmark split files will be added after minor formatting cleanup:
-
-```text
-data/
+├── taxonomy.json   # category and subcategory metadata
 ├── train.json      # 20% professional-domain extraction split
 ├── dev.json        # 10% professional-domain calibration split
 └── test.json       # 70% professional-domain pairs + all general-purpose pairs

@@ -6,10 +6,6 @@ This repository contains the code for the paper:
 
 HARVE is a training-free method for mitigating reward hacking in reward models. It estimates hacking-related directions from contrastive gold--hacked examples, constructs a multi-directional hacking subspace, and edits only the final reward-head vector while leaving the transformer backbone unchanged.
 
-## Data Release Status
-
-The benchmark data will be released in this repository after minor formatting cleanup.
-
 ## Repository Layout
 
 ```text
